@@ -2,6 +2,6 @@
 P = C502
 V = 1
 A = Gangat
-E = you@example.edu
+E = agangat@sarao.ac.za
 # your figures, named C502_f1.eps, C502_f2.png, ...
 FIGS = $(filter-out C502_inc.tex,$(wildcard C502_*))
