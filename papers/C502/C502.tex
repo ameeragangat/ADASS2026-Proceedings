@@ -1,232 +1,134 @@
-% This is the ADASS_template.tex LaTeX file, 24 Oct 2025.
-% It is based on the ASP general author template file, but modified to reflect the specific
-% requirements of the ADASS proceedings.
-
 % This is the aspauthor.tex LaTeX file
 % Copyright 2021, Astronomical Society of the Pacific Conference Series
 % Revision:  29 November 2021
 
 % To compile, at the command line positioned at this folder, type:
-% pdflatex ADASS_template
-% pdflatex ADASS_template
-% This will create a file called ADASS_template.pdf
+% pdflatex aspauthor
+% bibtex aspauthor
+% pdflatex aspauthor
+% pdflatex aspauthor
+% This will create a file called aspauthor.pdf.
 
 \documentclass[11pt,twoside]{article}
-
-% Do NOT use ANY packages other than asp2023. 
 \usepackage{asp2023}
 
 \aspSuppressVolSlug
 \resetcounters
 
-% References must all use BibTeX entries in a .bibfile.
-% References must be cited in the text using \citet{} or \citep{}.
-% Do not use \cite{}.
-% See ManuscriptInstructions.pdf for more details
 \bibliographystyle{asp2021}
 
-% The ``markboth'' line sets up the running heads for the paper.
-% 1 author: "Surname"
-% 2 authors: "Surname1 and Surname2"
-% 3 authors: "Surname1, Surname2, and Surname3"
-% >3 authors: "Surname1 et al."
-% Replace ``Short Title'' with the actual paper title, shortened if necessary.
-% Use mixed case type for the shortened title
-% Ensure shortened title does not cause an overfull hbox LaTeX error
-% See ASPmanual2010.pdf 2.1.4  and ManuscriptInstructions.pdf for more details
-\markboth{Author1, Author2, and Author3}{Short Title}
+\markboth{Gangat and Schwartz}{Building Confidence in PAWS with Playwright}
 
 \begin{document}
 
-\title{ADASS Author Template with Long Title}
+\title{Building Confidence in the MeerKAT Proposal Submission System with Playwright}
+\author{A.~Gangat and R.~L.~Schwartz}
+\affil{South African Radio Astronomy Observatory, Cape Town, South Africa; \email{agangat@sarao.ac.za}; \email{rschwartz@sarao.ac.za}}
 
-% Note the position of the comma between the author name and the 
-% affiliation number.
-% Authors surnames should come after first names or initials, eg John Smith, or J. Smith.
-% Author names should be separated by commas.
-% The final author should be preceded by "and".
-% Affiliations should not be repeated across multiple \affil commands. If several
-% authors share an affiliation this should be in a single \affil which can then
-% be referenced for several author names. If only one affiliation, no footnotes are needed.
-% See ManuscriptInstructions.pdf and ASP's manual2010.pdf 3.1.4 for more details
-\author{Sample~Author1,$^1$ Sample~Author2,$^2$ and Sample~Author3$^2$}
-\affil{$^1$Institution Name, Institution City, State/Province, Country; \email{AuthorEmail@email.edu}}
-\affil{$^2$Institution Name, Institution City, State/Province, Country}
 
-% This section is for ADS Processing.  There must be one line per author. paperauthor has 9 arguments.
-\paperauthor{Sample~Author1}{Author1Email@email.edu}{ORCID_Or_Blank}{Author1 Institution}{Author1 Department}{City}{State/Province}{Postal Code}{Country}
-\paperauthor{Sample~Author2}{Author2Email@email.edu}{ORCID_Or_Blank}{Author2 Institution}{Author2 Department}{City}{State/Province}{Postal Code}{Country}
-\paperauthor{Sample~Author3}{Author3Email@email.edu}{ORCID_Or_Blank}{Author3 Institution}{Author3 Department}{City}{State/Province}{Postal Code}{Country}
+% This section is for ADS Processing.  There must be one line per author.
+\paperauthor{A.~Gangat}{agangat@sarao.ac.za}{}{South African Radio Astronomy Observatory}{Software}{Cape Town}{}{}{South Africa}
+\paperauthor{R.~L.~Schwartz}{rschwartz@sarao.ac.za}{}{South African Radio Astronomy Observatory}{Software}{Cape Town}{}{}{South Africa}
 
-% There should be one \aindex line (commented out) for each author. These are used to
-% build up the author index for the Proceedings. The surname must come first, followed by
-% initials. Note the use of ~ before each initial to control spacing.
-% The \author entries (see above) have surname last. These \aindex entries have
-% surname first.
-% The Aindex.py command willl create them for you after you have constructed the \author
-% The first entry should be the first author, for bold-facing the author index page-reference
-
-%\aindex{FistAuthor1,~S.~A.}
-%\aindex{Author2,~S.~B.}
-%\aindex{Author3,~S.}
-
+% Author-index entries required by the ADASS template.
+%\aindex{Gangat,~A.}
+%\aindex{Schwartz,~R.~L.}
 
 \begin{abstract}
-This is the ADASS 2025 author template file.  This is based on the
-Astronomical Society of the Pacific (ASP) 2021 template, but has been
-modified to reflect the specific ADASS requirements.
+The Proposal Workflow System (PAWS) manages proposal submissions for the MeerKAT Radio Telescope, making reliability an important part of the user experience. This work introduces automated regression testing with Playwright to check that existing functionality is maintained as the application evolves.
+
+Tests create draft proposals and exercise key stages of the submission process. They also cover common form field validation scenarios and behaviours. Reusable helpers and test documents support repeatability and cleanup.
+
+The suite provides repeatable evidence that selected behaviours remain intact after application changes, including AI-assisted changes. It builds confidence in the tested workflows while complementing human review and other testing approaches, and provides a foundation for broader coverage.
 \end{abstract}
 
-% These lines show examples of subject index entries. At this stage these have to commented
-% out, and need to be on separate lines. Eventually, they will be automatically uncommented
-% and used to generate entries in the Subject Index at the end of the Proceedings volume.
-% Don't leave these in! - replace them with ones relevant to your paper.
-%\ssindex{FOOBAR!conference!ADASS 2019}
-%\ssindex{FOOBAR!organisations!ASP}
+\section{Introduction and Motivation}
 
-% These lines show examples of ASCL index entries. At this stage these have to commented
-% out, and need to be on separate lines. Eventually, they will be automatically uncommented
-% and used to generate entries in the ASCL Index at the end of the Proceedings volume.
-% The ascl.py command will scan your paper on possible code names.
-% Don't leave these in! - replace them with ones relevant to your paper.
-%\ooindex{FOOBAR, ascl:1101.010}
+Preparing a proposal for observing time on the MeerKAT Radio Telescope requires team details, science information, observing requirements, data-management arrangements and supporting documents. PAWS collects this information for technical, science and panel reviews \citep{SchwartzBaloyiSithole2024PAWSSubmission,SchwartzBaloyi2024PAWSReview}, making reliable submission workflows essential.\footnote{MeerKAT: \url{https://www.sarao.ac.za/science/meerkat/}.}
 
+PAWS replaced a largely manual submission process. Tight timelines initially limited unit testing, with features verified manually; later calls required a more customisable, in-house form \citep{SchwartzBaloyiSithole2024PAWSSubmission}. Between 2020 and 2023, submitted proposals increased from 112 to 170 and requested telescope time from 3343 to 7554 hours \citep{SchwartzBaloyiSithole2024PAWSSubmission}. By 2024, PAWS supported 71 science reviewers and 772 reviews, while maintaining legacy data increased code complexity \citep{SchwartzBaloyi2024PAWSReview}.
 
-\section{The Template}
-To fill in this template, make sure that you read and follow the ASPCS Instructions for Authors and Editors available for download online. Further hints and tips for including graphics, tables, citations, and other formatting helps are available there. With this template, you should have received a copy of the specific ADASS manuscript instructions, and you should also read these.
+During each call for proposals, requests from the Chief Scientist continue to refine submission workflows, while earlier proposal data must remain accessible for reuse and statistics. Changes to requirements, validation and frontend components, including Angular Material's migration to Material Design Components (MDC), require repeated checks of existing behaviour.\footnote{Angular Material v17 migration guide: \url{https://v17.material.angular.dev/guide/mdc-migration}.}
 
-\subsection{The Author Checklist}
-The following checklist should be followed when writing a submission to a conference proceedings to be published by the ASP for ADASS. The references are to sections in the ADASS manuscript instructions.\footnote{Most URLs should be in a footnote like this one.  In this case, you can download the online material from \url{http://www.adass.org}.} 
+\section{Adding Playwright to PAWS}
 
-\begin{itemize}
-\checklistitemize
+Playwright is an end-to-end testing framework that controls a browser and checks an application through its rendered user interface. Tests perform actions such as navigation, form input and file uploads, then use assertions to check expected results and detect regressions: previously working behaviour broken by application changes. Playwright supports Chromium, Firefox and WebKit; this PAWS suite is configured for Chromium.
 
-\item References must all use BibTeX entries in a .bib file. No use of \verb"\bibitem"! (Even though some older ASP templates have them.) (See References.)
-\item All references must be cited in the text, usually using \verb"\citet" or \verb"\citep".  Do not use \verb"\cite". (See References.)
-\item No LaTeX warnings. Particularly, no overfull hboxes or unresolved references. (See LaTeX warnings and errors.)
-\item No use of \verb"\usepackage" except for \verb"\usepackage{asp2023}". (See LaTeX packages and commands.)
-\item No use of \verb"\renewcommand" or \verb"\renewenvironment". (See LaTeX packages and commands.)
-\item Arguments to \verb"\citep" etc., should use ADS type references where possible, fall back on <author><year> or something suitably unique if not. (See References.)
-\item References in the text are all generated automatically (using \verb"\citep" etc), not put in explicitly as ordinary text that just looks like a generated reference. (See References.)
-\item Definitely no LaTeX errors. (See LaTeX warnings and errors.)
-\item Paper is the right length. References don't spill over into one more page. (See Length of Paper.)
-\item Paper has an abstract. (See Length of Paper.)
-\item References are to things that actually exist and can be expected to continue to exist. Not papers ``in preparation'' or URLs for blog items. (See References.)
-\item Graphics files have to be .eps encapsulated Postscript format. Yes they do! Sorry, but they do. (See Figures.)
-\item Name all the files properly:- figures are <paper>\_f<n>.eps, eg O1-3\_f1.eps. Paper names use dashes not periods, O1-3.tex not O1.3.tex. Posters now use the same naming convention as oral papers, e.g.\ X3-21. (See File names and Paper IDs.)
-\item Figure captions should make sense if the figure is printed in monochrome - because it will be! (See Figures.)
-\item Figures are legible at the size ADASS Proceedings volumes are printed, which is quite small. (See Figures.)
-\item Copyright forms signed and filled out - don't use electronic signatures. (See Miscellany.)
-\item Author lists follow the correct format: comma separated, with an `and' for the final author. (See Authors and Affiliations.)
-\item The first author of the paper must be the person who presented the paper at the conference. (See Authors and Affiliations.)
-\item No repetition of affiliations - list each organisation once, with multiple e-mail addresses if you really must. (See Authors and Affiliations.)
-\item Running heads should fit in the same horizontal space as the text does, not pushing the page numbers over to the right. (See LaTeX warnings and errors.)
-\item Run through a spelling checker. (I know that can be tricky with LaTeX.) (See Content and Typesetting.)
-\item Proofread, or have the text proofread, to check for proper English usage. In particular, note that ``allows to'' is not conventional English, and English uses articles (`a',`an',`the') in places where other languages, particularly Eastern European languages, don't have them. (See Content and Typesetting.)
-\end{itemize}
+Locators identify elements in the rendered document object model (DOM). The tests use user-facing locators where practical; otherwise, \texttt{data-testid} attributes provide dedicated identifiers in the rendered HTML when visible text or component structure is ambiguous. Before clicking, Playwright waits for the element to be visible, stable, enabled and able to receive events. Retrying assertions wait for expected results up to a timeout.\footnote{Playwright documentation: \url{https://playwright.dev/docs/locators}, \url{https://playwright.dev/docs/actionability} and \url{https://playwright.dev/docs/browsers}.}
 
-\section{Compiling}
-It is highly recommended that all figures be non-`eps' format, i.e., `png' or `jpg.'  For this case, compiling this article is done simply by using the command \texttt{pdflatex} at least twice on the command line from inside the same folder as the article LaTeX `.tex' file.  If there are references to `eps' image files, pdfLaTeX will not work, and the images should be converted to a non-`eps' type of image file format.
+In this example, the first \texttt{await} waits for the click operation to complete; the second waits for the dialog's visibility assertion to pass, failing if its timeout expires:
+\begin{verbatim}
+await page.getByTestId("add-observation-band-button").click();
+await expect(
+  page.getByTestId("add-observation-band-dialog")
+).toBeVisible();
+\end{verbatim}
 
-\section{Text}
-Sometimes you just need to have different styles of fonts.  \emph{Sometimes you just need to have different styles of fonts.} \textbf{Sometimes you just need to have different styles of fonts.}
+In PAWS, a batch groups proposals for a particular observing call; the tests use a configured test batch. Reusable helpers set up data-policy acceptance in the test browser, select this batch, create or clone proposals, update proposal state and remove test data. Figure~\ref{fig:1} shows how browser actions exercise the Angular interface and API helpers perform selected setup, verification and cleanup operations through the development proxy. The backend and its dependencies must be available during execution.
 
-Sometimes you just need to have different sizes of fonts.  {\small Sometimes you just need to have different sizes of fonts.} {\footnotesize Sometimes you just need to have different sizes of fonts.}  It would be very rare to require larger fonts within an ASP volume.
+\articlefigure[width=0.85\textwidth]{C502_f1.png}{fig:1}{Local PAWS test architecture. Browser actions and API helpers reach the backend through the development proxy. Browser isolation does not remove stored proposal data or uploaded files.}
 
-Do \emph{not} reduce the size of the main text font to try to squeeze more content into the paper. It will be restored by the editors and the paper will be rejected as too long.
+\section{Workflow and Regression Coverage}
 
-\section{Math}
-Sometimes authors include formulas inside the main text which should always be enclosed within \$ signs.  Look at the Pythagorean Formula $a^2 + b^2 = c^2$.
+Table~\ref{tab:coverage} summarises the submission checks exercised across multiple tests. The tested target path allows authors to proceed without specifying individual observing targets. Tests reach the final submission step without clicking Submit.
 
-Sometimes authors include formulas on their own lines.  This example uses the \verb"displaymath" environment which does not include an equation number.  To include an equation number, use the \verb"equation" environment.
-\begin{displaymath}
-c = \sqrt{a^2 + b^2} \qquad \textrm{Pythagorean Theorem}
-\end{displaymath}
-
-\section{Lists}
-\label{ex_lists}
-There are a lot of ways to make lists including itemized lists with bullets, for which you use  (\verb"\begin{itemize}"), numbered lists (\verb"\begin{enumerate}"), and description lists (\verb"\begin{description}").  This is an example of an itemized list.
-
-\subsection{Itemized Lists}
-Here is an itemized list:
-\begin{itemize}
-\item Item 1
-\item Item 2
-\end{itemize}
-
-
-\section{Table}
-Here is an example table that has three colums with various justification and row spacing.
-
-\begin{table}[!ht]
-\caption{Tables in \LaTeXe}
-\smallskip
-\begin{center}
-{\small
-\begin{tabular}{llc}  % l = left, c = centered
-\tableline
-\noalign{\smallskip}
-First Column & Second Column & Third Column:\\
-\noalign{\smallskip}
-\tableline
-\noalign{\smallskip}
-First Row, First Column & First Row, Second Column & First Row, Third Column \\
-Second Row, First Column & Second Row, Second Column & Second Row, Third Column \\
-Third Row, First Column & Third Row, Second Column & Third Row, Third Column \\
-\noalign{\smallskip}
-\tableline % Sometimes you just need a line between table rows
-\noalign{\smallskip}
-Fourth Row, First Column & ~ & Fourth Row, Third Column \\ % Sometimes you have empty cells
-\noalign{\smallskip} % Sometimes you just need space between table rows
-Fifth Row First Column & Fifth Row, Second Column & Fifth Row, Third Column\\ % No \\ if the last row
-\noalign{\smallskip}
-\tableline\
+\begin{table}[t]
+\caption{Main submission workflows tested with Playwright.}
+\label{tab:coverage}
+\centering
+\small
+\begin{tabular}{@{}p{0.25\textwidth}p{0.70\textwidth}@{}}
+\hline
+\textbf{Workflow area} & \textbf{What was tested} \\
+\hline
+Home/navigation & Opening PAWS and navigating to the submission list \\
+Proposal creation & Opening the creation dialog and creating a test-batch draft \\
+Team details & Entering principal investigator and technical lead details, including the same-as-PI option \\
+Science case & Selecting categories, entering an abstract, declaring AI use and uploading a science case PDF \\
+Targets & Proceeding without individual observing targets and checking the guidance message \\
+Observation setup & Entering observation details and selecting a band \\
+Data management & Selecting a facility, transfer mode and pipeline, and uploading a data management PDF \\
+Final submission & Entering additional information without clicking Submit \\
+\hline
 \end{tabular}
-}
-\end{center}
 \end{table}
-\noindent These tables can get a little messy, but this format is the most common.
 
-\section{Images}
-For some figures, see Figures \ref{ex_fig1}- \ref{ex_fig3}.
+The checks exercise the proposal information described in earlier PAWS work \citep{SchwartzBaloyiSithole2024PAWSSubmission}, alongside validation of required fields, email addresses, title length and PDF uploads. Reusable test PDFs, known as fixtures, check document acceptance, page limits and link warnings: a selected Google Drive link triggers a warning, while a safe-link example does not.
 
-These figures have been converted to the `png' image format.  Notice
-that the references to the figures do not need to include the file
-extension and that the pdfLaTeX compiler recognizes the non-`eps'
-image files.
+Separate tests cover cloning and revision. Cloning lets authors reuse information from an earlier proposal, including team details, to avoid retyping it. The current test verifies new identifiers, the target batch, draft state, a newly entered title and retention of the source abstract; it does not explicitly check copied team details. Revision allows a submitted proposal to be reopened for editing during the submission period \citep{SchwartzBaloyiSithole2024PAWSSubmission}. The revision test prepares a submitted proposal through the API, reopens it through the interface, edits and saves its title, and verifies the resulting backend state.
 
- 
-\articlefigure[width=0.65\textwidth]{example.jpg}{ex_fig1}{Welcome to 1365.  Size adjusted to be a little smaller than full.}
-% It is possible to reduce the size of a figure among other changes (see the instructions).  Here is an example:
-% \articlefigure[width=.5\textwidth]{example_image}{ex_fig1_reduced}{Welcome to 1953 a little smaller.}
-
-\articlefiguretwo{example}{example}{ex_fig2}{Now there are two of them.  \emph{Left:} An image from long ago.  \emph{Right:} The same exact thing.}
-% There is a figure command allowing for three figures:
-% \articlefigurethree{example.eps}{example.eps}{example.eps}{ex_fig1_triple}{Now there are three of them.}
-
-\articlefigurefour{example}{example}{example}{example}{ex_fig3}{Now four of them?}
-
-\clearpage % To force this stuff to happen by this point in the text, otherwise these will probably end up after the references.
-
-There are also the landscape versions \verb"\articlelandscapefigure" and \\
-\verb"\articlelandscapefiguretwo" which are further described in the instructions.
-
-\section{References}
-References must be provided in BibTeX format, in a .bib file, and should usually be referenced using \verb"\citet" or \verb"\citep". The file example.bib supplied with this template is taken from an ADASS 2015 paper, and includes references to previous ADASS proceedings 
-\citep[such as][]{1999ASPC..172..487P} and to papers in what was then the current 2015 proceedings (e.g.\ \citet{O11-4_adassxxv}). Note that the `TBD' entries that appear for papers in the current proceedings will be dealt with by the ADASS editors when the final volume is produced. The example .bib file has a large number of references unused by this template file; such unused references have been left in as an example, but should be removed before a paper is submitted.
-
-\section{Conference Photographs}
-
-At the end of this template you may find a commented line with the bookpartphoto where the editors could decided to add a conference photo,
-might there be enough room at the end of your paper. Leave this comment in, do not supply your own photos in this paper but contact the editors
-if you have some interesting shots.
-
-\acknowledgements The ASP would like to thank the dedicated researchers who are publishing with the ASP.  It will make things a lot easier if you keep this text on the same line as the \verb"\acknowledgements" command. Place it just before the bibliography. It's optional of course.
+The wider suite includes Panel Review tests for proposal lists, review information, report fields, downloads and navigation. This paper focuses on submission workflows.
 
 
-\bibliography{C502}  % For BibTex
+\section{Test Data, Cleanup and Reliability}
 
-% if we have space left, we might add a conference photograph here. Leave commented for now.
-% \bookpartphoto[width=1.0\textwidth]{foobar.eps}{FooBar Photo (Photo: Any Photographer)}
+Tests create proposals explicitly marked as test data in a configured test batch against the real backend. Cleanup first marks each proposal as deleted without removing its stored data, then uses a dedicated API endpoint to remove its record from Elasticsearch, the database used to store proposal data, and its associated files. This endpoint is restricted to development and test environments and requires the proposal to be marked, soft-deleted and owned by the current submitter. Failed or interrupted tests can still leave data behind.
+
+Separate browser contexts isolate cookies and local storage, but do not remove stored proposals or isolate the shared backend. Tests modifying the same proposal, user or batch can therefore interfere with one another. Reliable execution requires explicit test-data management as well as browser isolation.
+
+
+\section{Lessons, Benefits and Limitations}
+
+The main challenge was making tests reliable across asynchronous saves, dialogs, uploads and backend state changes. Tests must wait for observable outcomes rather than assume that a button click completes an operation. Stable selectors and reusable fixtures supported maintainability. The suite is configured to capture screenshots and retain execution traces when tests fail, supporting failure diagnosis. Implementing these workflows also clarified the connections between the interface, API and stored proposal data.
+
+The suite provides executable examples of selected submission workflows and repeatable checks of application changes. Coverage remains incomplete: end-to-end tests are slower than unit tests and depend on a working frontend, backend and prepared test data. Failures may reflect environment or data problems rather than application regressions. The suite complements other testing levels and human review; its effect on review time and regressions detected has not yet been measured.
+
+
+\section{Next Steps}
+
+Future work should map user acceptance testing (UAT) requirements to automated checks, revealing gaps across inputs, roles and proposal states. Coverage should be measured by features rather than inferred from test counts. Priorities include target and observation validation, proposal constraints, permissions, and reviewer workflows for editing, saving and submission \citep{SchwartzBaloyi2024PAWSReview}.
+
+Further work should improve cleanup after interrupted runs and make automated execution reproducible through consistent backend setup, test identities and prepared proposal data. Evaluation should track regressions detected before release, manual checking time, intermittent test failures and maintenance effort.
+
+Adding nightly automated execution of these tests to the Continuous Integration / Continuous Deployment (CI/CD) pipeline would also be of great benefit.
+
+
+\section{Conclusion}
+
+This work builds confidence in selected PAWS proposal-author workflows through repeatable browser-level regression checks. Reusable helpers, fixtures and explicit cleanup support maintainability as the application evolves. Passing tests provide evidence for the scenarios exercised, not a guarantee of correctness. The suite complements human review and other testing levels, providing a foundation for broader coverage.
+
+In today's fast-paced software development environment, where AI-powered tools are accelerating delivery cycles, automated regression testing is more critical than ever to ensure that existing user-facing features remain fully functional with each new deployment.
+
+\bibliography{C502}
 
 \end{document}
